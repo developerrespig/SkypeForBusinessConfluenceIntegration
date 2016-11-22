@@ -3,7 +3,8 @@ var skype_integration = skype_integration || {};
 skype_integration.user = {
     "admin": {"name":"Admin","email":"admin@confluence-demo.de","metadata":{"skypestatus":"Online","project":"Sicherheitstest Steuergeraet 1"}},
     "max": {"name":"Max Jurik","email":"jurik@business.de","metadata":{"skypestatus":"Offline","project":"Bus 1"}},
-    "martin": {"name":"Martin Gypser","email":"gypser@business.de","metadata":{"skypestatus":"DnD","project":"Bus 1"}}
+    "andreas": {"name":"Andreas Rieger","email":"andreas.rieger@communardo.de","metadata":{"skypestatus":"Online","project":"Bus 1"}},
+    "martin": {"name":"Martin Gypser","email":"martin.gypser@communardo.de","metadata":{"skypestatus":"DnD","project":"Bus 1"}}
 };
 
 skype_integration.statusMap = {
@@ -31,6 +32,10 @@ skype_integration.init = function() {
                     self.setOnlineStatus(userUrl, data);
                 }
             }, 1000);
+
+            userUrl.hover(function() {
+                setTimeout(self.buildCard, 200);
+            })
         }
     })
 };
@@ -42,8 +47,31 @@ skype_integration.setOnlineStatus = function(userUrl, data) {
 };
 
 skype_integration.buildCard = function(card) {
-    debugger;
+    var vcards = AJS.$("*[id^='content-hover-'] .contents");
+    if(vcards.size() !== 0) {
+        vcards.each(function(idx, value) {
+            var vcard = AJS.$(value);
+            var vcardValues = vcard.find(".vcard .values");
+            if(!vcardValues.hasClass("skype-integration-added") && vcardValues.size() !== 0) {
+                vcardValues.addClass("skype-integration-added");
+                vcardValues.append(skype_integration.buildSkypeBar(vcard));
+                vcard.show();
+            }
+        });
+    }
 };
+
+skype_integration.buildSkypeBar = function(vcard) {
+    var bar = AJS.$("<div>");
+    var linkBP = AJS.$("<a>");
+    var userData = this.user[vcard.find(".userLogoLink").data("username")];
+
+    //https://technet.microsoft.com/de-de/library/gg398376(v=ocs.15).aspx
+    bar.append(linkBP.clone().attr("href", "callto:<sip:" + userData.email + ">").text("Call"));
+    bar.append(linkBP.clone().attr("href", "IM:<sip:" + userData.email + ">").text("Message"));
+
+    return bar;
+}
 
 AJS.toInit(function() {
     MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
