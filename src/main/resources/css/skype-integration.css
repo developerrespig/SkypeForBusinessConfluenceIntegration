@@ -1,0 +1,22 @@
+.skype-offline,
+.skype-dnd,
+.skype-online {
+    border: 1px;
+    border-style: solid;
+    background-color: white;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-right: 3px;
+}
+
+.skype-online {
+    background-color: lightgreen;
+}
+
+.skype-dnd {
+    background-color: red;
+}
+
+*[id^='content-hover-'] .contents {
+    display: none;
+}
