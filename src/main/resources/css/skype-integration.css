@@ -17,6 +17,10 @@
     background-color: red;
 }
 
+.skype-icon {
+    margin-left: 20px;
+}
+
 *[id^='content-hover-'] .contents {
     display: none;
 }

@@ -62,13 +62,19 @@ skype_integration.buildCard = function(card) {
 };
 
 skype_integration.buildSkypeBar = function(vcard) {
-    var bar = AJS.$("<div>");
-    var linkBP = AJS.$("<a>");
-    var userData = this.user[vcard.find(".userLogoLink").data("username")];
+    var bar, linkBP, imgBP, userData;
+
+    bar = AJS.$("<div>");
+    bar.addClass("skype-bar");
+    linkBP = AJS.$("<a>");
+    imgBP = AJS.$("<img>");
+    imgBP.addClass("skype-icon");
+
+    userData = this.user[vcard.find(".userLogoLink").data("username")];
 
     //https://technet.microsoft.com/de-de/library/gg398376(v=ocs.15).aspx
-    bar.append(linkBP.clone().attr("href", "callto:<sip:" + userData.email + ">").text("Call"));
-    bar.append(linkBP.clone().attr("href", "IM:<sip:" + userData.email + ">").text("Message"));
+    bar.append(linkBP.clone().attr("href", "IM:<sip:" + userData.email + ">").append(imgBP.clone().attr("src", "https://maxcdn.icons8.com/windows10/PNG/32/Business/comments-32.png")));
+    bar.append(linkBP.clone().attr("href", "callto:<sip:" + userData.email + ">").append(imgBP.clone().attr("src", "https://maxcdn.icons8.com/windows10/PNG/32/Mobile/phone-32.png")));
 
     return bar;
 }
